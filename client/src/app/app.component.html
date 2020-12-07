@@ -1,0 +1,24 @@
+<div *ngIf="candidates">
+  <div *ngFor="let candidate of candidates">
+    <h2>Hello {{ candidate.contact_info.name.formatted_name }}</h2>
+    <h3>Job Experience</h3>
+    <ng-container *ngIf="candidate.experience && candidate.experience.length; else noExperienceBlock">
+      <ul>
+        <li *ngFor="let experience of candidate.experience">
+          <ng-container *ngIf="experience.type === 'gap'; then gapBlock else jobBlock"></ng-container>
+          <ng-template #gapBlock>
+            Gap between jobs: {{ experience.value }} {{ experience.kind }}
+          </ng-template>
+          <ng-template #jobBlock>
+            <span>Worked as: {{ experience.title }}</span>
+            <span *ngIf="experience.start_date">, From {{ experience.start_date }}, To {{ experience.end_date }}</span>
+          </ng-template>
+        </li>
+      </ul>
+    </ng-container>
+    <ng-template #noExperienceBlock>
+      <span class="no-experience">No Experience Found</span>
+    </ng-template>
+    <hr>
+  </div>
+</div>
